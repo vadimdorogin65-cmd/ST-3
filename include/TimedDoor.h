@@ -35,15 +35,16 @@ class TimedDoor : public Door {
   bool isOpened;
  public:
   explicit TimedDoor(int);
-  bool isDoorOpened();
-  void unlock();
-  void lock();
-  int  getTimeOut() const;
+  ~TimedDoor();
+  bool isDoorOpened() override;
+  void unlock() override;
+  void lock() override;
+  int getTimeOut() const;
   void throwState();
 };
 
 class Timer {
-  TimerClient *client;
+  TimerClient *client = nullptr;
   void sleep(int);
  public:
   void tregister(int, TimerClient*);
