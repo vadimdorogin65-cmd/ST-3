@@ -14,6 +14,7 @@ void DoorTimerAdapter::Timeout() {
 
 TimedDoor::TimedDoor(int timeout)
     : adapter(new DoorTimerAdapter(*this)),
+      timer(nullptr),
       iTimeout(timeout),
       isOpened(false) {}
 
@@ -22,14 +23,17 @@ TimedDoor::~TimedDoor() {
   adapter = nullptr;
 }
 
+void TimedDoor::setTimer(Timer* t) { timer = t; }
+
 bool TimedDoor::isDoorOpened() { return isOpened; }
 
 void TimedDoor::lock() { isOpened = false; }
 
 void TimedDoor::unlock() {
   isOpened = true;
-  Timer timer;
-  timer.tregister(iTimeout, adapter);
+  if (timer != nullptr) {
+    timer->tregister(iTimeout, adapter);
+  }
 }
 
 int TimedDoor::getTimeOut() const { return iTimeout; }
